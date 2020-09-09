@@ -1,1 +1,1 @@
-# Super Luminary Unified Response Magic Perfect Gathering Assesment (SLURMGPA)
+# Superlative Lightweight Unexpectedly Restricted Military Police Gattling Artillery (SLURMGPA)
