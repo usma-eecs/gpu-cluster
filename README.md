@@ -1,0 +1,1 @@
+# Super Luminary Unified Response Magic Perfect Gathering Assesment (SLURMGPA)
