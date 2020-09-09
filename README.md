@@ -1,1 +1,1 @@
-# Superlative Lightweight Unexpectedly Restricted Military Police Gattling Artillery (SLURMGPA)
+# Superlative Lightweight Unexpectedly Restricted Military Gattling Projectile Artillery (SLURMGPA)
