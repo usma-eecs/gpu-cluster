@@ -103,7 +103,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 
 This should install Flannel and allow the **coredns** pods to come online.
 
-### "Tainting" the Control Plane
+## "Tainting" the Control Plane
 
 **Source**: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 
