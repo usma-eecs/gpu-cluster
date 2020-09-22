@@ -1,6 +1,6 @@
 ## Installing Docker as the Cgroup Driver
 
-*Needs to be completed on all nodes*
+*Needs to be completed on all nodes.*
 
 **Source:** https://docs.docker.com/engine/install/debian/
 
@@ -81,6 +81,8 @@ The final line in the cluster startup will be a command that needs to be execute
 sudo kubeadm join --token <token> <control-plane-host>:<control-plane-port> --discovery-token-ca-cert-hash sha256:<hash>
 ```
 
+Paste this line into each node (after completing the installation steps above) in order to add each node to the cluster.
+
 ## Installing Flannel as the Container Network Interface
 
 *Only needed on control-plane node.*
@@ -101,9 +103,11 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 
 This should install Flannel and allow the **coredns** pods to come online.
 
-### "Tainting" the Control Plane
+## "Tainting" the Control Plane
 
-*Note: This has not be done to our control plane as of 9 SEP 20 but will likely be done in the future.*
+**Source**: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+
+*Note: This has not been done to our control plane as of 9 SEP 20 but will likely be done in the future.*
 
 If you need to schedule pods on the control plane node than you must "taint" the control plane using this command:
 
