@@ -117,7 +117,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 
 This may be necessary if you want to give a pod the ability to schedule other pods as (unless you change that setting as well) only the control plane can schedule pods. 
 
-### Add user to Docker group
+## Add user to Docker group
 
 *I believe this is only needed on the control plane.*
 
