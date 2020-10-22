@@ -116,3 +116,13 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
 This may be necessary if you want to give a pod the ability to schedule other pods as (unless you change that setting as well) only the control plane can schedule pods. 
+
+## Add user to Docker group
+
+*I believe this is only needed on the control plane.*
+
+In order to pull images from Docker Hub (and do other Docker things), the current user (**eecs** in our case) needs to be in the "docker" user group.
+
+```bash
+sudo usermod -aG docker eecs
+```

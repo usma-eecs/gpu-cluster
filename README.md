@@ -1,1 +1,1 @@
-# Superlative Lightweight Unexpectedly Restricted Military Gattling Projectile Artillery (SLURMGPA)
+# Superior Laxative Unemotionally Requisitioned to Make Grossly Proportioned Anthills (SLURMGPA) 
