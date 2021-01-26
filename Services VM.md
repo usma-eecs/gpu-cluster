@@ -113,3 +113,130 @@ sudo firewall-cmd --reload
 sudo systemctl enable named
 sudo systemctl start named
 ```
+
+### DHCP Server
+
+Next we will install a DHCP server for the cluster machines.
+
+```{bash}
+sudo apt install -y isc-dhcp-server
+```
+
+We then specify what interface to listen on for the DHCP server. This is done by setting the correct interface (**ens192** in this case) in /etc/default/isc-dhcp-server as well as uncommenting the lines pointing to the DHCP configuration and PID for IPv4.
+
+The next step is to add the configuration and static records to **/etc/default/dhcpd.conf**:
+
+```{bash}
+option domain-name "cluster.lan";
+option domain-name-servers services.cluster.lan;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style none;
+
+authoritative;
+
+subnet 192.168.1.0 netmask 255.255.255.0 {
+option routers 192.168.1.1;
+option subnet-mask 255.255.255.0;
+option domain-name "cluster.lan";
+option domain-name-servers 192.168.1.1;
+#Keep this range far away from our static reservations
+range 192.168.1.100 192.168.1.199;
+}
+
+#Add these for all your clients
+host rancher-1 {
+ hardware ethernet 00:00:00:00:00:00;
+ fixed-address 192.168.1.10;
+}
+```
+
+We'll have to come back here to update these records once the MAC addresses are assigned for the VMs we create for the clusters.
+
+Now we have to add the DHCP service to the firewall and start the DHCP service.
+
+```{bash}
+sudo firewall-cmd --permanent --zone=internal --add-service=dhcp
+sudo firewall-cmd --reload
+
+sudo systemctl enable isc-dhcp-server
+sudo systemctl start isc-dhcp-server
+```
+
+## Loadbalancer
+
+We are going to install **haproxy** as a loadbalancer for all our services.
+
+```{bash}
+sudo apt install -y haproxy
+```
+
+Replace the contents of /etc/haproxy/haproxy.cfg with what is below:
+
+```{bash}
+global
+    maxconn     20000
+    log         /dev/log local0 info
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    user        haproxy
+    group       haproxy
+    daemon
+
+    stats socket /var/lib/haproxy/stats
+
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option http-server-close
+    option forwardfor       except 127.0.0.0/8
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          300s
+    timeout server          300s
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 20000
+
+#The HAProxy "Stats" page
+#Available at port 9000
+listen stats
+    bind :9000
+    mode http
+    stats enable
+    stats uri /
+
+#Define services as needed
+#This service load balances the Rancher Web UI
+frontend rancher_http_fe
+    bind :80
+    default_backend rancher_http_be
+    mode tcp
+    option tcplog
+
+backend rancher_http_be
+    balance source
+    mode tcp
+    server rancher-1 192.168.1.10:80 check
+    server rancher-2 192.168.1.11:80 check
+    server rancher-3 192.168.1.12:80 check
+```
+
+Finally we open the firewall and start the service:
+
+```{bash}
+sudo firewall-cmd --permanent --zone=external --add-port=9000/tcp
+sudo firewall-cmd --permanent --zone=external --add-port=80/tcp
+sudo firewall-cmd --permanent --zone=external --add-service=http
+sudo firewall-cmd --reload
+
+sudo systemctl enable haproxy
+sudo systemctl start haproxy
+```
