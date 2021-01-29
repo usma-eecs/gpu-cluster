@@ -39,9 +39,9 @@ sudo apt install -y bind9
 
 We need to go into /etc/default/named and change an options line to OPTIONS="-u bind -4" to set in IPv4-only mode.
 
-The following lines should be added inside the existing options block inside /etc/bind/named.conf.options:
+The following lines should be added inside the existing options block inside **`/etc/bind/named.conf.options`**:
 
-```{bash}
+```{yaml}
 #Listen on localhost and the IP address for our cluster internal
 listen-on port 53 { 127.0.0.1; 192.168.1.1; };
 
@@ -58,18 +58,18 @@ forwarders {
 };
 ```
 
-Next we need to set up a zone for this DNS server to manage. We can add this zone to /etc/bind/named.conf.local by adding this block:
+Next we need to set up a zone for this DNS server to manage. We can add this zone to **`/etc/bind/named.conf.local`** by adding this block:
 
-```{bash}
+```{yaml}
 zone "rancher.lan" {
   type master;
   file "/etc/bind/db.cluster.lan";
 };
 ```
 
-To go along with this zone definition, we'll have to create the file at **/etc/bind/db.cluster.lan" with these contents:
+To go along with this zone definition, we'll have to create the file at **`/etc/bind/db.cluster.lan`** with these contents:
 
-```{bash}
+```{yaml}
 ; Time-to-live for DNS record cache
 $TTL    86400
 ; Defines the origin hostname for our zone
@@ -124,9 +124,9 @@ sudo apt install -y isc-dhcp-server
 
 We then specify what interface to listen on for the DHCP server. This is done by setting the correct interface (**ens192** in this case) in /etc/default/isc-dhcp-server as well as uncommenting the lines pointing to the DHCP configuration and PID for IPv4.
 
-The next step is to add the configuration and static records to **/etc/default/dhcpd.conf**:
+The next step is to add the configuration and static records to **`/etc/dhcp/dhcpd.conf`**:
 
-```{bash}
+```{yaml}
 option domain-name "cluster.lan";
 option domain-name-servers services.cluster.lan;
 
@@ -173,9 +173,9 @@ We are going to install **haproxy** as a loadbalancer for all our services.
 sudo apt install -y haproxy
 ```
 
-Replace the contents of /etc/haproxy/haproxy.cfg with what is below:
+Replace the contents of **`/etc/haproxy/haproxy.cfg`** with what is below:
 
-```{bash}
+```{yaml}
 global
     maxconn     20000
     log         /dev/log local0 info
