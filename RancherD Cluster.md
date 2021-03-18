@@ -118,4 +118,24 @@ tls-san:
   - k8s.eecs.net
 ```
 
+## SSL Termination at Load Balancer
+After initially standing up this cluster it because clear that, if we wanted to do any sort of domain-based routing for HTTPS services, we needed to have SSL termination at HAProxy (our external load balancer). To this end, there are a few things that have to be done to allow the use of our own SSL certificate that can be maintained by HAProxy. We opted to use a self-signed certificate as our system can't grab a Let's Encrypt but ideally we would use something like that. 
+
+Assuming you've created your own certificate through one of the multiple of methods, you should have a **cert.pem** and **key.pem** file. We need to put these files in the **/etc/rancher/ssl** folder on the all nodes. Additionally, the directory **/var/lib/rancher/rke2/server/manifests** needs to be created on all nodes and the following file should be stored there:
+
+#### **`/var/lib/rancher/rke2/server/manifests/values.yaml`**
+```{yaml}
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rancher
+  namespace: kube-system
+spec:
+  valuesContent: |
+    publicCA: true
+```
+This file modifies the Helm deployment of RancherD and allows the use of a *public certificate authority (CA)*. 
+
+The additional steps should be all that is necessary when standing up the RancherD Rancher cluster. Remember that the **cert.pem** and **key.pem** files also need to be on the load balancer machine (the *Services* VM in our case).
+
 
