@@ -107,7 +107,7 @@ sudo firewall-cmd --permanent --zone=external --add-port=8443/tcp
 sudo firewall-cmd --reload
 ```
 
-## Additional Nodes
+## Additional No**d**es
 Running through the Rancher install documentation exactly can distract you from cloning your VM before starting the RancherD service. Ideally you do this because the second and third node need to join the first node as fellow members of the cluster. As we didn't clone the VM before starting the service, we had to use the **sudo rancherd-uninstall.sh** script to remove the seperate Rancher "cluster" spun up when **Rancher-2** was cloned. Following this, we added the necessary line to the **config.yaml** to point **Rancher-2** at the existing cluster when we went through the RancherD install step again.
 
 #### **`/etc/rancher/rke2/config.yaml`**
@@ -118,4 +118,6 @@ tls-san:
   - k8s.eecs.net
 ```
 
+### Additional No**t**es
+When you are going through the initial Rancher setup, we had issues if we used **https://k8s.eecs.net** for the Rancher address. This is likely because of some load-balancing routing issues. Instead, we opted to use the IP address of our Rancher-1 node. This could cause some issues with a HA cluster but we'll have to look at tackling this issue at some point in the future. 
 
