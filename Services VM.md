@@ -1,5 +1,7 @@
 # Services VM
 
+**Update as of 31 March**: When we flattened the architecture of the cluster (put all the nodes directly on EECSNet) we no longer user this VM as a DNS and DHCP server. Only the load balancing functions remained. 
+
 The first machine to be established will be the "services" VM that will function as single point of ingress into the Rancher Cluster (and later clusters). This VM will serve as the load balancer, DHCP server, and DNS server for the VLAN that all of the cluster machines are on. 
 
 For this machine, we will use Ubuntu 20.04 Desktop as a template was easily available and it will provide us a desktop environment to monitor various resources inside the cluster VLAN. This machine has 4 cores, 8GB of RAM, and 64GB of storage. This VM also has two NICs, one for each of the networks it straddles.

@@ -22,18 +22,9 @@ sudo deluser ubuntu
 
 We rename the VM to **rancher-1** in **`/etc/hostname`**. Note: This change won't take effect until a reboot.
 
-### Add MAC Address to DHCP
+### Static IP
 
-Using **ip a** we need to find the MAC address of this VM so we can add a static IP reservation to our DHCP server. We add this reservation in **`/etc/dhcp/dhcpd.conf`**:
-
-```{yaml}
-host rancher-1 {
-    hardware ethernet 00:00:00:00:00:00;
-    fixed-address 192.168.1.11
-}
-```
-
-Following this we need to restart the DHCP server as well as the Rancher node so we can verify the hostname has changed and the IP reservation is correct.
+We submitted the MAC address of the machine to recieve an static IP address for the machine.
 
 ## RancherD Setup
 
@@ -78,7 +69,7 @@ kubectl get daemonset rancher -n cattle-system
 kubectl get pod -n cattle-system
 ```
 
-Note: I had to **chown** the **`/etc/rancher/rke2`** directory in order to get **kubectl** to function.
+Note: We had to **chown** the **`/etc/rancher/rke2`** directory in order to get **kubectl** to function.
 
 ### Admin Password
 Once the Rancher is running, we used the **rancherd reset-admin** to get the admin password for the web portal. You can also verify that your SAN was pulled correctly from your **config.yaml**. According to Rancher's documentation you should have *https://* in front of your SAN in the configuration file; however, we found that wasn't correct. This finding is supported by other RKE2 documentation from Rancher.
@@ -117,7 +108,3 @@ token: wouldnt-you-like-to-know
 tls-san:
   - k8s.eecs.net
 ```
-
-### Additional No**t**es
-When you are going through the initial Rancher setup, we had issues if we used **https://k8s.eecs.net** for the Rancher address. This is likely because of some load-balancing routing issues. Instead, we opted to use the IP address of our Rancher-1 node. This could cause some issues with a HA cluster but we'll have to look at tackling this issue at some point in the future. 
-
