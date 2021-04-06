@@ -438,7 +438,7 @@ singleuser:
       kubespawner_override:
         extra_resource_limits:
           deepomatic.com/shared-gpu: '1'
-        image: 'cdasdsp/dsp-notebook:2077'
+        image: 'cdasdsp/k8s-notebook:1'
   serviceAccountName: null
   startTimeout: 300
   storage:
