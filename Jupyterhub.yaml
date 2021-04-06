@@ -32,7 +32,10 @@ hub:
     LDAPAuthenticator:
       bind_dn_template:
         - 'cn={username},ou=Faculty,dc=eecs,dc=net'
-        - 'cn={username},ou=Cadets,dc=eecs,dc=net'
+        - 'cn={username},ou=2024,ou=Cadets,dc=eecs,dc=net'
+        - 'cn={username},ou=2023,ou=Cadets,dc=eecs,dc=net'
+        - 'cn={username},ou=2022,ou=Cadets,dc=eecs,dc=net'
+        - 'cn={username},ou=2021,ou=Cadets,dc=eecs,dc=net'
       lookup_dn: true
       lookup_dn_search_filter: '({login_attr}={login})'
       lookup_dn_search_password: PASSWORD!!!!

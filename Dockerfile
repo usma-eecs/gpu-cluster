@@ -8,6 +8,9 @@ RUN usermod -l $NB_USER jovyan
 
 RUN usermod -d /home/jovyan jovyan
 
+#Be a good GPU neighbor
+ENV TF_FORCE_GPU_ALLOW_GROWTH=TRUE
+
 USER jovyan
 
 RUN rm $HOME/CAUTION.txt
