@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hub-ingress
+  namespace: jhub
+  annotations:
+spec:
+  ingressClassName: nginx
+  tls:
+   - hosts:
+     - jupyter.k8s.eecs.net
+     secretName: k8s.eecs.net
+  rules:
+  - host: jupyter.k8s.eecs.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: proxy-public
+          servicePort: 80
