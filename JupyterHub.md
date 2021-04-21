@@ -72,7 +72,8 @@ hub:
 ```
 
 ## LDAP Authentication
-We worked with LTC Morrell to get this LDAP Authentication established to remove the burden of managing user acccounts. One future change will be to utilize a seperate service account to search the Active Directory (instead of the bryan.jonas@eecs.net account).
+We worked with LTC Morrell to get this LDAP Authentication established to remove the burden of managing user acccounts.
+
 ```{yaml}
 config:
     JupyterHub:
@@ -84,7 +85,7 @@ config:
       lookup_dn: true
       lookup_dn_search_filter: '({login_attr}={login})'
       lookup_dn_search_password: PASSWORD!!!!
-      lookup_dn_search_user: bryan.jonas@eecs.net
+      lookup_dn_search_user: k8s_services@eecs.net
       lookup_dn_user_dn_attribute: cn
       server_address: dc01.eecs.net
       user_attribute: sAMAccountName
