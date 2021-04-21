@@ -38,7 +38,7 @@ hub:
         - 'cn={username},ou=2021,ou=Cadets,dc=eecs,dc=net'
       lookup_dn: true
       lookup_dn_search_filter: '({login_attr}={login})'
-      lookup_dn_search_password: nzye6cF@nhE5sNy!QX4MYYceo@DVUD#P7XqKpoZs8ok6GPWFKe
+      lookup_dn_search_password: Password!!!
       lookup_dn_search_user: k8s_service@eecs.net
       lookup_dn_user_dn_attribute: cn
       server_address: dc01.eecs.net
