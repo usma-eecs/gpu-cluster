@@ -31,7 +31,12 @@ connectors:
     bindPW: PASSWORD!!!
     usernamePrompt: EECSNet Username (first.last)
     userSearch:
-      baseDN: ou=Faculty,dc=eecs,dc=net
+      baseDN:
+      - ou=Faculty,dc=eecs,dc=net
+      - ou=2024,ou=Cadets,dc=eecs,dc=net
+      - ou=2023,ou=Cadets,dc=eecs,dc=net
+      - ou=2022,ou=Cadets,dc=eecs,dc=net
+      - ou=2021,ou=Cadets,dc=eecs,dc=net
       username: sAMAccountName
       idAttr: sAMAccountName
       emailAttr: userPrincipalName
